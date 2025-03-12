@@ -18,8 +18,50 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
-Route::post('/category/store', function (Request $request) {
-    DB::table('categories')->insert([
-        'name'=> $request->name
+Route::get('/index', function () {
+    return view('index');
+});
+Route::get('/panel/index', function () {
+    return view('panel.index');
+});
+Route::get('/panel/categories/index', function () {
+    $categories= DB::table('categories')->get();
+
+    return view('panel.categories.index',compact('categories'));
+});
+Route::post('/panel/categories/store', function (Request $request) {
+    $request->validate([
+        'title'=> 'required|string',
+        'image'=> 'required|image'
     ]);
+
+
+    $targetDir = "assets/img/";
+    $image = $request->file("image");
+
+    $path = $targetDir.basename($image->getClientOriginalName()) ;
+
+
+
+$image->move($targetDir ,$image->getClientOriginalName());
+
+
+DB::table('categories')->insert([
+    'title' => $request->title,
+    'image' => $path
+]);
+return redirect('/panel/categories/index');
+
+
 })->name('category.store');
+
+
+
+
+Route::get('/panel/categories/delete/{id}', function ($id) {
+DB::table('categories')->where('category_id', $id)->delete();
+return redirect('/panel/categories/index');
+
+
+})->name('category.delete');
+
