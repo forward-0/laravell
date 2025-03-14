@@ -13,7 +13,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
     </style>
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body dir="rtl">
     <div class="content">
